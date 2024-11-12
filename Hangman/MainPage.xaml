@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2021/maui/toolkit"
+             x:Class="Hangman.MainPage"
+             BackgroundImageSource="background.jpg">
+
+    <Grid RowDefinitions=".6*, .4*">
+        <VerticalStackLayout Spacing="1">
+            <Label
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                Text="{Binding GameStatus}"
+                TextColor="White" />
+            <!-- Changed to White for visibility -->
+            <Image HeightRequest="175" Source="{Binding CurrentImage}" />
+            <Label FontSize="40"
+                   HorizontalOptions="Center"
+                   Text="{Binding Spotlight}"
+                   VerticalOptions="Center"
+                   TextColor="White" />
+            <Label FontSize="Large"
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding Message}"
+                   TextColor="White" />
+            <Button HorizontalOptions="Center"
+                    Text="Reset"
+                    WidthRequest="100"
+                    TextColor="Gray"
+                    BackgroundColor="White"
+                    Clicked="Button_Clicked" />
+            <Button HorizontalOptions="Center"
+                    Text="Hint (Costs 3 Errors)"
+                    WidthRequest="200"
+                    Margin="0,15,0,0"
+                    TextColor="Gray"
+                    BackgroundColor="White"
+                    Clicked="HintButton_Clicked" />
+        </VerticalStackLayout>
+        <FlexLayout Grid.Row="1" JustifyContent="SpaceEvenly"
+                    Wrap="Wrap"
+                    x:Name="LettersContainer"
+                    BindableLayout.ItemsSource="{Binding Letters}">
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Button
+                        HeightRequest="50"
+                        WidthRequest="50"
+                        Text="{Binding .}"
+                        TextColor="Gray"
+                        BackgroundColor="White"
+                        Clicked="Button_Clicked_1" />
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+        </FlexLayout>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hangman.LandingPage"
+             Title="LandingPage"
+             BackgroundImageSource="background.jpg">
+    
+    <VerticalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+        <Label
+            Text="Welcome to Hangman"
+            FontSize="32"
+            TextColor="White"
+            FontAttributes="Bold"
+            HorizontalOptions="Center" />
+
+        <Button
+            Text="Play"
+            TextColor="White"
+            BackgroundColor="Gray"
+            WidthRequest="200"
+            HeightRequest="50"
+            Clicked="OnPlayButtonClicked" />
+    </VerticalStackLayout>
+</ContentPage>
