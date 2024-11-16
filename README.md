@@ -40,8 +40,10 @@ The game is based on the classic **Hangman** rules:
 
 Here are some screenshots of the game in action:
 
-![Game Screenshot 1](assets/screenshots/screenshot1.png)
-![Game Screenshot 2](assets/screenshots/screenshot2.png)
+![Screenshot_20241117_011355](https://github.com/user-attachments/assets/a32312f6-15d5-4bff-b4d2-730682a877a1)
+![Screenshot_20241117_011400](https://github.com/user-attachments/assets/ffc9c03f-e176-4c73-8b28-f8587e170015)
+![Screenshot_20241117_011411](https://github.com/user-attachments/assets/c11b7954-6ca4-4791-916d-b6c02d400b13)
+![Screenshot_20241117_011434](https://github.com/user-attachments/assets/2c137ba0-3ff7-44bc-8039-31008cebc665)
 
 ---
 
