@@ -1,19 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2021/maui/toolkit"
              x:Class="Hangman.MainPage"
-             BackgroundImageSource="background.jpg">
+             BackgroundColor="#0D92F4">
 
     <Grid RowDefinitions=".6*, .4*">
-        <VerticalStackLayout Spacing="1">
+        <!-- Category Picker -->
+        <Picker x:Name="CategoryPicker" 
+          Title="Select Category" 
+          SelectedIndexChanged="OnCategoryChanged"
+          TextColor="White" 
+          Margin="10,0,0,0"
+          FontSize="15">
+            <Picker.Items>
+                <x:String>Animals</x:String>
+                <x:String>Fruits</x:String>
+                <x:String>Countries</x:String>
+                <x:String>Cities</x:String>
+                <x:String>Movies</x:String>
+            </Picker.Items>
+        </Picker>
+
+        <VerticalStackLayout Spacing="1" Margin="0,10,0,0">
+            <!-- Your existing content remains here -->
             <Label
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
                 Text="{Binding GameStatus}"
                 TextColor="White" />
-            <!-- Changed to White for visibility -->
-            <Image HeightRequest="175" Source="{Binding CurrentImage}" />
+            <Image HeightRequest="240" Source="{Binding CurrentImage}"
+                   Margin="50,10,0,0"/>
             <Label FontSize="40"
                    HorizontalOptions="Center"
                    Text="{Binding Spotlight}"
@@ -23,20 +39,25 @@
                    HorizontalTextAlignment="Center"
                    Text="{Binding Message}"
                    TextColor="White" />
-            <Button HorizontalOptions="Center"
-                    Text="Reset"
-                    WidthRequest="100"
-                    TextColor="Gray"
-                    BackgroundColor="White"
-                    Clicked="Button_Clicked" />
-            <Button HorizontalOptions="Center"
-                    Text="Hint (Costs 3 Errors)"
-                    WidthRequest="200"
-                    Margin="0,15,0,0"
-                    TextColor="Gray"
-                    BackgroundColor="White"
-                    Clicked="HintButton_Clicked" />
+            <HorizontalStackLayout Spacing="40" Margin="30,0,0,0">
+                <Button HorizontalOptions="Center"
+                      Text="Reset"
+                      WidthRequest="100"
+                      TextColor="Gray"
+                      BackgroundColor="White"
+                      Clicked="Button_Clicked" />
+                
+                
+                <Button HorizontalOptions="Center"
+                      Text="Hint"
+                      WidthRequest="100"
+                      Margin="90,0,0,0"
+                      TextColor="Gray"
+                      BackgroundColor="White"
+                      Clicked="HintButton_Clicked" />
+            </HorizontalStackLayout>
         </VerticalStackLayout>
+
         <FlexLayout Grid.Row="1" JustifyContent="SpaceEvenly"
                     Wrap="Wrap"
                     x:Name="LettersContainer"
@@ -44,8 +65,9 @@
             <BindableLayout.ItemTemplate>
                 <DataTemplate>
                     <Button
+                        Margin="5,0,0,0"
                         HeightRequest="50"
-                        WidthRequest="50"
+                        WidthRequest="45"
                         Text="{Binding .}"
                         TextColor="Gray"
                         BackgroundColor="White"

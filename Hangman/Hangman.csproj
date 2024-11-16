@@ -41,6 +41,7 @@
 	<ItemGroup>
 		<!-- App Icon -->
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appiconfg.svg" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
@@ -57,10 +58,23 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\AppIcon\appiconfg.svg" />
+	  <None Remove="Resources\backgroundmusic.mp3" />
+	  <None Remove="Resources\Images\background1.png" />
+	  <None Remove="Resources\Images\background3.png" />
+	  <None Remove="Resources\Images\landing.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Include="Resources\Audio\backgroundmusic.mp3" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="7.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="3.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>

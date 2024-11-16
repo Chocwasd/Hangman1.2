@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
+using Plugin.Maui.Audio;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace Hangman
 {
     public partial class MainPage : ContentPage, INotifyPropertyChanged
     {
+
+        // Declare the audio player instance and timer
+        private IAudioPlayer _audioPlayer;
+        private Timer _loopTimer;
+
         #region UI Properties
         public string Spotlight
         {
@@ -60,20 +66,16 @@ namespace Hangman
         #endregion
 
         #region Fields
-        List<string> words = new List<string>()
+        Dictionary<string, List<string>> categoryWords = new Dictionary<string, List<string>>()
         {
-            "python",
-            "javascript",
-            "maui",
-            "csharp",
-            "mongodb",
-            "sql",
-            "xaml",
-            "xamarin",
-            "aspnet",
-            "word",
-            "excel"
+            { "Animals", new List<string> { "elephant", "tiger", "giraffe", "koala", "zebra", "kangaroo" } },
+            { "Fruits", new List<string> { "apple", "banana", "orange", "kiwi", "mango", "grape" } },
+            { "Countries", new List<string> { "india", "china", "france", "brazil", "canada", "germany" } },
+            { "Cities", new List<string> { "paris", "london", "tokyo", "sydney", "newyork", "berlin" } },
+            { "Movies", new List<string> { "inception", "titanic", "avatar", "gladiator", "joker", "batman" } }
         };
+
+        List<string> words = new List<string>();
         string answer = "";
         private string spotlight;
         List<char> guessed = new List<char>();
@@ -90,11 +92,26 @@ namespace Hangman
             InitializeComponent();
             Letters.AddRange("abcdefghijklmnopqrstuvwxyz");
             BindingContext = this;
-            PickWord();
+            CategoryPicker.SelectedIndex = 0; // Set default category to Animals
+            PickWord(); // Pick a word from the selected category
             CalculateWord(answer, guessed);
 
             // Set a default value for GameStatus so it shows on the UI
             GameStatus = "Errors: 0 of 7";
+        }
+
+        private void OnCategoryChanged(object sender, EventArgs e)
+        {
+            // Get the selected category
+            var selectedCategory = CategoryPicker.SelectedItem.ToString();
+            words = categoryWords[selectedCategory];  // Update word list based on category
+            PickWord();  // Pick a new word from the selected category
+            CalculateWord(answer, guessed);  // Update Spotlight with the new word
+            mistakes = 0;  // Reset the mistakes counter
+            CurrentImage = "hang1.png";  // Reset the image
+            Message = "";  // Clear any previous message
+            UpdateStatus();  // Update the status
+            EnableLetters();  // Re-enable letter buttons
         }
 
         #region Game Engine
@@ -109,7 +126,6 @@ namespace Hangman
             var temp = answer.Select(x => (guessed.IndexOf(x) >= 0 ? x : '_')).ToArray();
             Spotlight = string.Join(' ', temp);
         }
-
         #endregion
 
         private void Button_Clicked(object sender, EventArgs e)
@@ -162,7 +178,7 @@ namespace Hangman
             if (Spotlight.Replace(" ", "") == answer)
             {
                 Message = "You Win!";
-                ShowGameResultPopup("You Win!");
+                ShowGameResultPopup("You Win!", answer);
                 DisableLetters();
             }
         }
@@ -177,7 +193,7 @@ namespace Hangman
             if (mistakes == maxWrong)
             {
                 Message = "You Lost!!";
-                ShowGameResultPopup("You Lost!!");
+                ShowGameResultPopup("You Lost!!", answer);
                 DisableLetters();
             }
         }
@@ -224,6 +240,9 @@ namespace Hangman
                     guessed.Add(hintLetter);  // Add the hint letter to the guessed list
                     CalculateWord(answer, guessed);  // Update Spotlight
                 }
+
+                // Update the image based on the new number of mistakes after using the hint
+                CurrentImage = $"hang{mistakes}.png";
             }
             else
             {
@@ -231,12 +250,14 @@ namespace Hangman
             }
         }
 
-
-        private async void ShowGameResultPopup(string resultMessage)
+        private async void ShowGameResultPopup(string resultMessage, string correctAnswer)
         {
+            // Combine the result message with the correct answer
+            var popupMessage = $"{resultMessage}\nThe correct answer was: {correctAnswer}";
+
             var popup = new Toast
             {
-                Text = resultMessage,
+                Text = popupMessage,
                 Duration = ToastDuration.Short
             };
 
@@ -255,5 +276,39 @@ namespace Hangman
         }
 
         #endregion
+
+
+        private async void PlayBackgroundMusic()
+        {
+            // Get the music file from resources
+            var file = await FileSystem.OpenAppPackageFileAsync("Resources/Audio/backgroundmusic.mp3");
+
+            // Create the audio player
+            _audioPlayer = AudioManager.Current.CreatePlayer(file);
+
+            // Play the music
+            _audioPlayer.Play();
+
+            // Start a timer to check if the music has finished
+            _loopTimer = new Timer(CheckAudioPlayback, null, 0, 1000);  // Check every second
+        }
+
+        // Method to check if the audio has finished
+        private void CheckAudioPlayback(object state)
+        {
+            // The Plugin.Maui.Audio does not expose the state, so we rely on the time position check instead
+            // If the audio has finished playing, restart it
+            if (_audioPlayer.CurrentPosition >= _audioPlayer.Duration)
+            {
+                _audioPlayer.Play(); // Restart the music
+            }
+        }
+
+        private void StopBackgroundMusic()
+        {
+            // Stop the music and dispose of the timer
+            _audioPlayer?.Stop();
+            _loopTimer?.Dispose();
+        }
     }
 }

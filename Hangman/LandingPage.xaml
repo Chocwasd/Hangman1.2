@@ -2,23 +2,31 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hangman.LandingPage"
-             Title="LandingPage"
-             BackgroundImageSource="background.jpg">
+            BackgroundColor="#0D92F4">
     
-    <VerticalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+    <VerticalStackLayout Spacing="20" HorizontalOptions="CenterAndExpand" Margin="0,50,0,0">
         <Label
-            Text="Welcome to Hangman"
-            FontSize="32"
+            Text="Hangman"
+            FontSize="52"
             TextColor="White"
             FontAttributes="Bold"
             HorizontalOptions="Center" />
-
+        <Label
+            Text="by Edrian V. Visagas"
+            FontSize="15"
+            TextColor="White"
+            FontAttributes="Bold"
+            Margin="0,-15,0,0"
+            HorizontalOptions="Center" />
+        <Image
+                Source="landing.png"
+                HeightRequest="400"
+                Margin="0,30,0,0"/>
         <Button
             Text="Play"
             TextColor="White"
-            BackgroundColor="Gray"
-            WidthRequest="200"
-            HeightRequest="50"
+            FontSize="40"
+            BackgroundColor="Transparent"
             Clicked="OnPlayButtonClicked" />
     </VerticalStackLayout>
 </ContentPage>
